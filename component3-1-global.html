@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue.js Example - グローバル登録</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #42b983;
+      border-bottom: 2px solid #42b983;
+      padding-bottom: 10px;
+    }
+    .info {
+      background: #e8f5e9;
+      padding: 15px;
+      border-left: 4px solid #4caf50;
+      margin: 15px 0;
+    }
+    .blog-post {
+      margin: 10px 0;
+      padding: 10px;
+      background: #f9f9f9;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>グローバル登録の例</h1>
+  
+  <div class="container">
+    <div class="info">
+      <strong>グローバル登録の特徴：</strong><br>
+      ✅ 親コンポーネント内でも使用可能<br>
+      ✅ アプリ内のどこでも使用可能
+    </div>
+    
+    <div id="app1">
+      <h2>直接使用（ルートレベル）</h2>
+      <blog-post title="Vuejsとの航海"></blog-post>
+      <blog-post title="Vueとの旅"></blog-post>
+      <blog-post title="Vue旅行記"></blog-post>
+      
+      <h2>親コンポーネント内で使用</h2>
+      <blog-list></blog-list>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@3.5.0/dist/vue.global.js"></script>
+  <script>
+    // グローバル登録の例
+    const app1 = Vue.createApp({});
+    
+    // グローバル登録：app1内のすべてのコンポーネントで使用可能
+    app1.component('blog-post', {
+      props: ['title'],
+      template: `<div class="blog-post"><h4>{{ title }}</h4></div>`
+    });
+    
+    // 親コンポーネント（グローバル登録されたblog-postを使用可能）
+    app1.component('blog-list', {
+      template: `
+        <div>
+          <p><strong>親コンポーネント内でも blog-post が使えます！</strong></p>
+          <blog-post title="親コンポーネント内の記事1"></blog-post>
+          <blog-post title="親コンポーネント内の記事2"></blog-post>
+        </div>
+      `
+    });
+
+    app1.mount('#app1');
+  </script>
+  </body>
+  </html>
+
