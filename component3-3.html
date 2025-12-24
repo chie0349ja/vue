@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue.js Example</title>
+  <style>
+    .demo {
+      font-family: sans-serif;
+      border: 1px solid #eee;
+      border-radius: 2px;
+      padding: 20px 30px;
+      margin-top: 1em;
+      margin-bottom: 40px;
+      user-select: none;
+      overflow-x: auto;
+    }
+    
+    .blog-post {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="blog-posts-events-demo">
+    <div :style="{ fontSize: postFontSize + 'em' }">
+      <blog-post
+        v-for="post in posts"
+        :key="post.id"
+        :title="post.title"
+        @enlarge-text="postFontSize += 0.1"
+      ></blog-post>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@3.5.0/dist/vue.global.js"></script>
+  <script>
+    // 親コンポーネント（アプリケーション）
+    const app = Vue.createApp({
+      data() {
+        return {
+          // 表示する投稿データ
+          posts: [
+            { id: 1, title: 'Vueとの航海' },
+            { id: 2, title: 'Vueとの旅' },
+            { id: 3, title: 'Vue旅行記' }
+          ],
+          // フォントサイズを管理するデータプロパティ（初期値: 1em）
+          postFontSize: 1
+        };
+      }
+    });
+    // 子コンポーネント（blog-post）
+    app.component('blog-post', {
+      props: ['title'],  // 親から受け取るプロパティ
+      template: `
+        <div class="blog-post">
+          <h4>{{ title }}</h4>
+          <!-- 
+            ボタンクリック時に $emit('enlarge-text') で
+            親コンポーネントにイベントを送信
+          -->
+          <button @click="$emit('enlarge-text')">
+            Enlarge text
+          </button>
+        </div>
+      `
+    });
+
+    app.mount('#blog-posts-events-demo');
+  </script>
+</body>
+</html>

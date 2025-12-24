@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>静的 vs 動的 - 比較</title>
+  <style>
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #42b983;
+      text-align: center;
+      border-bottom: 3px solid #42b983;
+      padding-bottom: 10px;
+    }
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin: 30px 0;
+    }
+    .method {
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .static {
+      border-color: #ff9800;
+    }
+    .dynamic {
+      border-color: #4caf50;
+    }
+    .method h2 {
+      margin-top: 0;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .static h2 {
+      background: #fff3e0;
+      color: #e65100;
+    }
+    .dynamic h2 {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    .code-block {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 4px;
+      margin: 15px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      overflow-x: auto;
+    }
+    .demo {
+      border: 2px solid #42b983;
+      border-radius: 4px;
+      padding: 20px;
+      margin: 15px 0;
+      background: #f9f9f9;
+      min-height: 80px;
+    }
+    .pros-cons {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 4px;
+      margin-top: 15px;
+    }
+    .pros-cons h3 {
+      margin-top: 0;
+    }
+    .pro {
+      color: #4caf50;
+      font-weight: bold;
+    }
+    .con {
+      color: #f44336;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>静的（手動）vs 動的（v-for）の比較</h1>
+    
+    <div class="comparison">
+      <!-- 静的（手動）の方法 -->
+      <div class="method static">
+        <h2>❌ 静的（手動で書く方法）</h2>
+        <p><strong>問題点：</strong>データが増えるたびに、HTMLを手動で追加する必要があります。</p>
+        
+        <div class="code-block">
+&lt;blog-post title="Vueとの航海"&gt;&lt;/blog-post&gt;<br>
+&lt;blog-post title="Vueとの旅"&gt;&lt;/blog-post&gt;<br>
+&lt;blog-post title="Vue旅行記"&gt;&lt;/blog-post&gt;
+        </div>
+        
+        <div class="pros-cons">
+          <h3>特徴</h3>
+          <p class="con">❌ データが100個あったら、100行書く必要がある</p>
+          <p class="con">❌ データが変更されても、HTMLを手動で更新する必要がある</p>
+          <p class="con">❌ 保守性が低い</p>
+        </div>
+      </div>
+
+      <!-- 動的（v-for）の方法 -->
+      <div class="method dynamic">
+        <h2>✅ 動的（v-forを使う方法）</h2>
+        <p><strong>利点：</strong>データの数に関係なく、1つのv-forで自動的に繰り返し表示できます。</p>
+        
+        <div class="code-block">
+&lt;blog-post<br>
+&nbsp;&nbsp;v-for="post in posts"<br>
+&nbsp;&nbsp;:key="post.id"<br>
+&nbsp;&nbsp;:title="post.title"<br>
+&gt;&lt;/blog-post&gt;
+        </div>
+        
+        <div class="pros-cons">
+          <h3>特徴</h3>
+          <p class="pro">✅ データが100個でも、1行のv-forで対応可能</p>
+          <p class="pro">✅ データが変更されると、自動的に表示が更新される</p>
+          <p class="pro">✅ 保守性が高い</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 40px;">
+      <h2 style="color: #42b983;">実際の動作比較</h2>
+      
+      <div class="comparison">
+        <!-- 静的版 -->
+        <div>
+          <h3>静的版（手動）</h3>
+          <div id="static-demo" class="demo">
+            <blog-post title="Vueとの航海"></blog-post>
+            <blog-post title="Vueとの旅"></blog-post>
+            <blog-post title="Vue旅行記"></blog-post>
+          </div>
+          <p><small>※ データを追加するには、HTMLを手動で編集する必要があります</small></p>
+        </div>
+
+        <!-- 動的版 -->
+        <div>
+          <h3>動的版（v-for）</h3>
+          <div id="dynamic-demo" class="demo">
+            <blog-post
+              v-for="post in posts"
+              :key="post.id"
+              :title="post.title"
+            ></blog-post>
+          </div>
+          <p><small>※ データ配列を変更するだけで、自動的に表示が更新されます</small></p>
+        </div>
+      </div>
+    </div>
+
+    <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin-top: 30px;">
+      <h2 style="margin-top: 0; color: #1976d2;">💡 まとめ</h2>
+      <p><strong>v-forを使うことで：</strong></p>
+      <ul>
+        <li>データの数が変わっても、コードを変更する必要がない</li>
+        <li>APIから取得したデータをそのまま表示できる</li>
+        <li>ユーザーがデータを追加・削除しても、自動的に反映される</li>
+        <li>コードがシンプルで読みやすい</li>
+      </ul>
+      <p style="margin-top: 20px;"><strong>→ これが「動的」という意味です！</strong></p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@3.5.0/dist/vue.global.js"></script>
+  <script>
+    // blog-postコンポーネントを定義
+    const BlogPost = {
+      props: ['title'],
+      template: `<h4>{{ title }}</h4>`
+    };
+
+    // 静的版のアプリ（手動で3つ書く）
+    const staticApp = Vue.createApp({
+      components: {
+        'blog-post': BlogPost
+      }
+    });
+    staticApp.mount('#static-demo');
+
+    // 動的版のアプリ（v-forで繰り返す）
+    const dynamicApp = Vue.createApp({
+      data() {
+        return {
+          posts: [
+            { id: 1, title: 'Vueとの航海' },
+            { id: 2, title: 'Vueとの旅' },
+            { id: 3, title: 'Vue旅行記' }
+          ]
+        }
+      },
+      components: {
+        'blog-post': BlogPost
+      }
+    });
+    dynamicApp.mount('#dynamic-demo');
+  </script>
+</body>
+</html>
+
